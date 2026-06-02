@@ -739,7 +739,7 @@ namespace UMC_AV1_DECODER
                         Update_drc(sequence_header.get());
                         m_RecreateSurfaceFlag = IsNeedRecreateSurface(old_seqHdr.get(), sequence_header.get());
 
-                        if ((frame_source && !frame_source->GetSurfaceType()) || (frame_source->GetSurfaceType() && m_RecreateSurfaceFlag))
+                        if (frame_source && (!frame_source->GetSurfaceType() || (frame_source->GetSurfaceType() && m_RecreateSurfaceFlag)))
                         {
                             // new resolution required
                             return UMC::UMC_NTF_NEW_RESOLUTION;
@@ -782,7 +782,7 @@ namespace UMC_AV1_DECODER
                         PreFrame_id = OldPreFrame_id;
 
                         m_RecreateSurfaceFlag = IsNeedRecreateSurface(old_seqHdr.get(), sequence_header.get());
-                        if ((frame_source && !frame_source->GetSurfaceType()) || (frame_source->GetSurfaceType() && m_RecreateSurfaceFlag))
+                        if (frame_source && (!frame_source->GetSurfaceType() || (frame_source->GetSurfaceType() && m_RecreateSurfaceFlag)))
                         {
                             // new resolution required
                             return UMC::UMC_NTF_NEW_RESOLUTION;

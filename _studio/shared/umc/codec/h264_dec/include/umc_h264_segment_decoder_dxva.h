@@ -123,25 +123,29 @@ public:
     void DecodePicture(H264DecoderFrame * pFrame, int32_t field)
     {
         Status sts = 0;
-        if (!m_va)
+        if (!m_va || !pFrame || !pFrame->GetFrameData() || !m_Base)
             return;
 
         MFX_AUTO_LTRACE(MFX_TRACE_LEVEL_HOTSPOTS, "H264 decode DDISubmitTask");
-        TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_SUBMIT_TASK, EVENT_TYPE_START, TR_KEY_DDI_API, make_event_data(++FrameIndex, pFrame->GetFrameData()->GetFrameMID()));
+        UMC::FrameMemID frameMid = pFrame->GetFrameData()->GetFrameMID();
+        TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_SUBMIT_TASK, EVENT_TYPE_START, TR_KEY_DDI_API, make_event_data(++FrameIndex, frameMid));
 
-        sts = m_va->BeginFrame(pFrame->GetFrameData()->GetFrameMID(), field);
+        sts = m_va->BeginFrame(frameMid, field);
         MFX_LTRACE_I(MFX_TRACE_LEVEL_INTERNAL, sts);
-        TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_SUBMIT_TASK, EVENT_TYPE_END, TR_KEY_DDI_API, make_event_data(FrameIndex, pFrame->GetFrameData()->GetFrameMID(), sts));
+        TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_SUBMIT_TASK, EVENT_TYPE_END, TR_KEY_DDI_API, make_event_data(FrameIndex, frameMid, sts));
 
         if (sts != UMC_OK)
             throw h264_exception(sts);
 
         H264_DXVA_SegmentDecoder * dxva_sd = (H264_DXVA_SegmentDecoder*)(m_Base->m_pSegmentDecoder[0]);
-        assert(dxva_sd);
+        if (!dxva_sd)
+            return;
 
         for (uint32_t i = 0; i < m_Base->m_iThreadNum; i++)
         {
-            ((H264_DXVA_SegmentDecoder *)m_Base->m_pSegmentDecoder[i])->SetVideoAccelerator(m_va);
+            H264_DXVA_SegmentDecoder* segmentDecoder = (H264_DXVA_SegmentDecoder*)m_Base->m_pSegmentDecoder[i];
+            if (segmentDecoder)
+                segmentDecoder->SetVideoAccelerator(m_va);
         }
 
         dxva_sd->PackAllHeaders(pFrame, field);

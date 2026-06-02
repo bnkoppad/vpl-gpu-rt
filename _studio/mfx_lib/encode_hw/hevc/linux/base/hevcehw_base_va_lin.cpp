@@ -606,7 +606,8 @@ mfxStatus DDI_VA::QueryCaps()
 
     if (AV(VAConfigAttribEncROI) != VA_ATTRIB_NOT_SUPPORTED) // VAConfigAttribEncROI
     {
-        auto roi = *(VAConfigAttribValEncROI*)&attrs[idx_map[VAConfigAttribEncROI]].value;
+        VAConfigAttribValEncROI roi = {};
+        roi.value = attrs[idx_map[VAConfigAttribEncROI]].value;
 
         assert(roi.bits.num_roi_regions < 32);
         m_caps.MaxNumOfROI                  = roi.bits.num_roi_regions;

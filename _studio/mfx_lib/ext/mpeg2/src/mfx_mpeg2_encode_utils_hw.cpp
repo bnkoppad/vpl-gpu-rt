@@ -1175,7 +1175,10 @@ namespace MPEG2EncoderHW
             {
                 extFromSpsPps = *ext;
             }
-            if (!SHParametersEx::CheckSHParameters(pSPSPPS->SPSBuffer, pSPSPPS->SPSBufSize, real_len, &m_VideoParamsEx.mfxVideoParams, &extFromSpsPps))
+            MFX_CHECK(pSPSPPS->SPSBufSize == 0 || pSPSPPS->SPSBuffer, MFX_ERR_INVALID_VIDEO_PARAM);
+
+            if (pSPSPPS->SPSBufSize
+                && !SHParametersEx::CheckSHParameters(pSPSPPS->SPSBuffer, pSPSPPS->SPSBufSize, real_len, &m_VideoParamsEx.mfxVideoParams, &extFromSpsPps))
                 return MFX_ERR_INCOMPATIBLE_VIDEO_PARAM;
 
             ext = &extFromSpsPps;

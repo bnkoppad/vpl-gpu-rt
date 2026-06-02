@@ -549,19 +549,26 @@ SEI_Storer_H265::SEI_Message* SEI_Storer_H265::AddMessage(UMC::MediaDataEx *nalU
 }
 
 ViewItem_H265::ViewItem_H265()
+    : dpbSize(0)
+    , sps_max_dec_pic_buffering(1)
+    , sps_max_num_reorder_pics(0)
+    , pCurFrame(0)
+    , localFrameTime(0)
 {
-    Reset();
 
 } // ViewItem_H265::ViewItem_H265(void)
 
 ViewItem_H265::ViewItem_H265(const ViewItem_H265 &src)
+    : dpbSize(src.dpbSize)
+    , sps_max_dec_pic_buffering(src.sps_max_dec_pic_buffering)
+    , sps_max_num_reorder_pics(src.sps_max_num_reorder_pics)
+    , pCurFrame(0)
+    , localFrameTime(0)
 {
-    Reset();
-
-    pDPB.reset(src.pDPB.release());
-    dpbSize = src.dpbSize;
-    sps_max_dec_pic_buffering = src.sps_max_dec_pic_buffering;
-    sps_max_num_reorder_pics = src.sps_max_num_reorder_pics;
+    if (src.pDPB.get())
+    {
+        pDPB.reset(src.pDPB.release());
+    }
 
 } // ViewItem_H265::ViewItem_H265(const ViewItem_H265 &src)
 
@@ -2306,8 +2313,13 @@ UMC::Status TaskSupplier_H265::AddSlice(H265Slice * pSlice, bool )
         // if the slices belong to different AUs or SPS/PPS was changed,
         // close the current AU and start new one.
 
-        const H265SeqParamSet * sps = m_Headers.m_SeqParams.GetHeader(pSlice->GetSeqParam()->GetID());
-        const H265PicParamSet * pps = m_Headers.m_PicParams.GetHeader(pSlice->GetPicParam()->GetID());
+        const H265SeqParamSet* sliceSps = pSlice->GetSeqParam();
+        const H265PicParamSet* slicePps = pSlice->GetPicParam();
+        if (!sliceSps || !slicePps)// undefined behavior
+            return UMC::UMC_ERR_FAILED;
+
+        const H265SeqParamSet * sps = m_Headers.m_SeqParams.GetHeader(sliceSps->GetID());
+        const H265PicParamSet * pps = m_Headers.m_PicParams.GetHeader(slicePps->GetID());
 
         if (!sps || !pps) // undefined behavior
             return UMC::UMC_ERR_FAILED;
@@ -2329,8 +2341,13 @@ UMC::Status TaskSupplier_H265::AddSlice(H265Slice * pSlice, bool )
     // try to allocate a new frame.
     else
     {
-        H265SeqParamSet * sps = m_Headers.m_SeqParams.GetHeader(pSlice->GetSeqParam()->GetID());
-        H265PicParamSet * pps = m_Headers.m_PicParams.GetHeader(pSlice->GetPicParam()->GetID());
+        const H265SeqParamSet* sliceSps = pSlice->GetSeqParam();
+        const H265PicParamSet* slicePps = pSlice->GetPicParam();
+        if (!sliceSps || !slicePps)// undefined behavior
+            return UMC::UMC_ERR_FAILED;
+
+        H265SeqParamSet * sps = m_Headers.m_SeqParams.GetHeader(sliceSps->GetID());
+        H265PicParamSet * pps = m_Headers.m_PicParams.GetHeader(slicePps->GetID());
 
         if (!sps || !pps) // undefined behavior
             return UMC::UMC_ERR_FAILED;

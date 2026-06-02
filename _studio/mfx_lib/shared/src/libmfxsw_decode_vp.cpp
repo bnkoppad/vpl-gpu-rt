@@ -343,7 +343,9 @@ mfxStatus MFXVideoDECODE_VPP_Init(mfxSession session, mfxVideoParam* decode_par,
             session->m_pDVP->AssignPool(id, scoped_cache_ptr.get());
             scoped_cache_ptr.release();
 
-            MFX_SAFE_CALL(session->m_pDVP->GetSurfacePool(id)->SetupCache(session, VppParams));
+            auto* pPool = session->m_pDVP->GetSurfacePool(id);
+            MFX_CHECK_HDL(pPool);
+            MFX_SAFE_CALL(pPool->SetupCache(session, VppParams));
         }
     }
     catch (...)

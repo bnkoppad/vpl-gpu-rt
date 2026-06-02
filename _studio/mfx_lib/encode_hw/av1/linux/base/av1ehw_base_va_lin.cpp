@@ -428,17 +428,20 @@ mfxStatus DDI_VA::QueryCaps()
     m_caps.AV1ToolSupportFlags.fields.enable_order_hint = 1;
     m_caps.AV1ToolSupportFlags.fields.enable_cdef       = 1;
 
-    auto attribValEncAV1 = *(VAConfigAttribValEncAV1 *)(&attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1]].value);
+    VAConfigAttribValEncAV1 attribValEncAV1 = {};
+    attribValEncAV1.value = attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1]].value;
     m_caps.CDEFChannelStrengthSupport = attribValEncAV1.bits.support_cdef_channel_strength ? 1 : 0;
     m_caps.AV1ToolSupportFlags.fields.PaletteMode = attribValEncAV1.bits.support_palette_mode ? 1 : 0;
     m_caps.AV1ToolSupportFlags.fields.allow_intrabc = attribValEncAV1.bits.support_allow_intrabc ? 1 : 0;
     
-    auto attribValEncAV1Ext1 = *(VAConfigAttribValEncAV1Ext1 *)(&attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1Ext1]].value);
+    VAConfigAttribValEncAV1Ext1 attribValEncAV1Ext1 = {};
+    attribValEncAV1Ext1.value = attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1Ext1]].value;
     m_caps.SegmentFeatureSupport               = attribValEncAV1Ext1.bits.segment_feature_support;
     m_caps.MinSegIdBlockSizeAccepted           = attribValEncAV1Ext1.bits.min_segid_block_size_accepted;
     m_caps.SupportedInterpolationFilters.value = static_cast<mfxU8>(attribValEncAV1Ext1.bits.interpolation_filter);
 
-    auto attribValEncAV1Ext2 = *(VAConfigAttribValEncAV1Ext2 *)(&attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1Ext2]].value);
+    VAConfigAttribValEncAV1Ext2 attribValEncAV1Ext2 = {};
+    attribValEncAV1Ext2.value = attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1Ext2]].value;
     m_caps.TileSizeBytesMinus1 = attribValEncAV1Ext2.bits.tile_size_bytes_minus1;
 
     return MFX_ERR_NONE;

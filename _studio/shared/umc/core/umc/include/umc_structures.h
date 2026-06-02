@@ -688,7 +688,7 @@ namespace UMC
     {
         // some compilers complain to conversion to/from
         // pointer types from/to integral types.
-        return (T) ((((uint8_t *) pv - (uint8_t *) 0) + (lAlignValue - 1)) &
+        return (T) (((size_t) pv + (lAlignValue - 1)) &
                     ~(lAlignValue - 1));
     }
 

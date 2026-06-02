@@ -1334,6 +1334,8 @@ SurfaceSource::SurfaceSource(VideoCORE* core, const mfxVideoParam& video_param, 
         MFX_CHECK_WITH_THROW_STS(mfxSts >= MFX_ERR_NONE, mfxSts);
 
         useInternal |= needVppJPEG;
+        auto* allocatorAdapter = m_umc_allocator_adapter.get();
+        MFX_CHECK_WITH_THROW_STS(allocatorAdapter, MFX_ERR_INVALID_HANDLE);
 
         // allocates internal surfaces:
         if (useInternal)
@@ -1344,22 +1346,22 @@ SurfaceSource::SurfaceSource(VideoCORE* core, const mfxVideoParam& video_param, 
 
             MFX_CHECK_WITH_THROW_STS(mfxSts >= MFX_ERR_NONE, mfxSts);
 
-            UMC::Status umcSts = m_umc_allocator_adapter->InitMfx(0, m_core, &video_param, &request, &m_response, !useInternal, platform == MFX_PLATFORM_SOFTWARE);
+            UMC::Status umcSts = allocatorAdapter->InitMfx(0, m_core, &video_param, &request, &m_response, !useInternal, platform == MFX_PLATFORM_SOFTWARE);
             MFX_CHECK_WITH_THROW_STS(umcSts == UMC::UMC_OK, MFX_ERR_MEMORY_ALLOC);
         }
         else
         {
-            UMC::Status umcSts = m_umc_allocator_adapter->InitMfx(0, m_core, &video_param, &request, &m_response, !useInternal, platform == MFX_PLATFORM_SOFTWARE);
+            UMC::Status umcSts = allocatorAdapter->InitMfx(0, m_core, &video_param, &request, &m_response, !useInternal, platform == MFX_PLATFORM_SOFTWARE);
             MFX_CHECK_WITH_THROW_STS(umcSts == UMC::UMC_OK, MFX_ERR_MEMORY_ALLOC);
 
-            m_umc_allocator_adapter->SetExternalFramesResponse(&m_response);
+            allocatorAdapter->SetExternalFramesResponse(&m_response);
         }
 
 #ifndef MFX_DEC_VIDEO_POSTPROCESS_DISABLE
         if ((mfxExtDecVideoProcessing *)GetExtendedBuffer(video_param.ExtParam, video_param.NumExtParam, MFX_EXTBUFF_DEC_VIDEO_PROCESSING))
         {
             MFX_CHECK_WITH_THROW_STS(useInternal || MFX_HW_D3D11 == m_core->GetVAType() || MFX_HW_VAAPI == m_core->GetVAType(), MFX_ERR_UNSUPPORTED);
-            m_umc_allocator_adapter->SetSfcPostProcessingFlag(true);
+            allocatorAdapter->SetSfcPostProcessingFlag(true);
         }
 #endif
     }
@@ -1536,6 +1538,8 @@ mfxFrameSurface1* SurfaceSource::GetDecoderSurface(UMC::FrameMemID index)
         std::ignore = MFX_STS_TRACE(MFX_ERR_INVALID_HANDLE);
         return nullptr;
     }
+
+    MFX_CHECK(m_vpl_cache_decoder_surfaces, nullptr);
 
     mfxFrameSurface1* surf = (*m_vpl_cache_decoder_surfaces)->FindSurface(it->second);
     if (m_sw_fallback_sys_mem)
