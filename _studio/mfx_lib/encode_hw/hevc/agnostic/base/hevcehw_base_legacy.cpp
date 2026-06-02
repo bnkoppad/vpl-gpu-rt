@@ -3298,7 +3298,7 @@ void Legacy::SetSTRPS(
         // count frames that use SPS RPS
         auto AccFrWithRPS = [](mfxU32 x, const STRPS& r)
         {
-            return std::move(x) + r.inter_ref_pic_set_prediction_flag * r.WeightInGop;
+            return std::move(x) + (mfxU32)r.inter_ref_pic_set_prediction_flag * (mfxU32)r.WeightInGop;
         };
         if (mfx::CeilLog2(nSet) - mfx::CeilLog2(nSet - 1)) //diff RPS idx bits with bigger RPS for ALL frames
             bits0 = par.mfx.NumSlice * std::accumulate(pSetsBegin, pSetsBegin + nSet - 1, bits0, AccFrWithRPS);

@@ -182,11 +182,15 @@ mfxStatus MFXVideoDECODE_VPP_Init(mfxSession session, mfxVideoParam* decode_par,
                     break;
                 case MFX_SCALING_MODE_INTEL_GEN_VEBOX:
                     remap_buffer = true;
+                    vppScalingMode = MFX_SCALING_MODE_LOWPOWER;
+                    break;
                 case MFX_SCALING_MODE_LOWPOWER:
                     vppScalingMode = MFX_SCALING_MODE_LOWPOWER;
                     break;
                 case MFX_SCALING_MODE_INTEL_GEN_COMPUTE:
                     remap_buffer = true;
+                    vppScalingMode = MFX_SCALING_MODE_QUALITY;
+                    break;
                 case MFX_SCALING_MODE_QUALITY:
                     vppScalingMode = MFX_SCALING_MODE_QUALITY;
                     break;

@@ -136,7 +136,7 @@ void BitstreamWriter::PutBitsBuffer(mfxU32 n, void* bb, mfxU32 o)
             n -= 8;
         }
 
-        if (n)
+        if (n > 0)
             PutBits(n, (b[0] >> (8 - n)));
 
         return true;

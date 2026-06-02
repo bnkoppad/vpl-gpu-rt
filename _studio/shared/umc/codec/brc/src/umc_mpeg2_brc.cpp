@@ -214,8 +214,8 @@ Status MPEG2BRC::CheckHRDParams()
   mHRD.inputBitsPerFrame = mHRD.maxInputBitsPerFrame = mHRD.maxBitrate / mFramerate;
 
   if (BRC_VBR == mRCMode) {
-    if (mHRD.bufSize > (uint32_t)16384 * 0x3fffe)
-      mHRD.bufSize = (uint32_t)16384 * 0x3fffe;
+    if (mHRD.bufSize > (uint32_t)16384 * 0x3fffeu)
+      mHRD.bufSize = (uint32_t)16384 * 0x3fffeu;
     if(!full_hw)
     //allow initial delay to be different from buffer size
     mHRD.bufFullness = mHRD.bufSize; // vbv_delay = 0xffff in case of VBR
@@ -223,8 +223,8 @@ Status MPEG2BRC::CheckHRDParams()
     uint32_t max_buf_size = (uint32_t)(0xfffe * (unsigned long long)mHRD.maxBitrate / 90000); // vbv_delay is coded with 16 bits:
                                                                               //  it is either 0xffff everywhere (VBR) or < 0xffff
     if (mHRD.bufSize > max_buf_size) {
-      if (max_buf_size > (uint32_t)16384 * 0x3fffe)
-        max_buf_size = (uint32_t)16384 * 0x3fffe;
+      if (max_buf_size > (uint32_t)16384 * 0x3fffeu)
+        max_buf_size = (uint32_t)16384 * 0x3fffeu;
       if (mHRD.bufFullness > max_buf_size/2) { // leave mHRD.bufFullness unchanged if below mHRD.bufSize/2
         double newBufFullness = mHRD.bufFullness * max_buf_size / mHRD.bufSize;
         if (newBufFullness < (double)max_buf_size / 2)
@@ -233,8 +233,8 @@ Status MPEG2BRC::CheckHRDParams()
       }
       mHRD.bufSize = max_buf_size;
     } else {
-      if (mHRD.bufSize > (uint32_t)16384 * 0x3fffe)
-        mHRD.bufSize = (uint32_t)16384 * 0x3fffe;
+      if (mHRD.bufSize > (uint32_t)16384 * 0x3fffeu)
+        mHRD.bufSize = (uint32_t)16384 * 0x3fffeu;
       if (mHRD.bufFullness > (double)mHRD.bufSize)
         mHRD.bufFullness = (double)mHRD.bufSize;
     }

@@ -78,8 +78,8 @@ Status VideoBrc::CheckCorrectParams_MPEG2(VideoBrcParams *inBrcParams, VideoBrcP
   if (outBrcParams)
     *outBrcParams = *inBrcParams;
 
-  if (static_cast<unsigned int>(bufferSizeBytes) > MFX_MAX_32U >> 3)
-    bufferSizeBytes = MFX_MAX_32U >> 3;
+  if (bufferSizeBytes > 0 && static_cast<unsigned int>(bufferSizeBytes) > (0xFFFFFFFFu >> 3))
+    bufferSizeBytes = static_cast<int32_t>(0xFFFFFFFFu >> 3);
 
   bufSizeBits = bufferSizeBytes << 3;
   bitsPerFrame = targetBitrate / framerate;

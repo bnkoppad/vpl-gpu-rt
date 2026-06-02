@@ -267,7 +267,7 @@ void Interlace::Query1NoCaps(const FeatureBlocks& , TPushQ1 Push)
 
             sps.log2_max_pic_order_cnt_lsb_minus4 =
                 mfx::clamp<mfxU32>(
-                    mfx::CeilLog2(mfx.GopRefDist * 2 + sps.sub_layer[sps.max_sub_layers_minus1].max_dec_pic_buffering_minus1) - 1
+                    mfx::CeilLog2((mfxU32)mfx.GopRefDist * 2u + sps.sub_layer[sps.max_sub_layers_minus1].max_dec_pic_buffering_minus1) - 1
                     , sps.log2_max_pic_order_cnt_lsb_minus4
                     , 12u);
             sps.vui.frame_field_info_present_flag = 1;

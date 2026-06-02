@@ -624,7 +624,7 @@ mfxStatus MFXVideoFrameInterpolation::DoInterpolation(mfxU16 leftIdx, mfxU16 rig
 
 mfxStatus MFXVideoFrameInterpolation::DoInterpolation()
 {
-    MFX_RETURN(DoInterpolation(0, (mfxU16)m_ratio));
+    MFX_RETURN(DoInterpolation(0, m_ratio > 0 ? (mfxU16)m_ratio : (mfxU16)0));
 }
 
 mfxStatus MFXVideoFrameInterpolation::InterpolateAi(mfxFrameSurface1& bwd, mfxFrameSurface1& fwd, mfxFrameSurface1& out)

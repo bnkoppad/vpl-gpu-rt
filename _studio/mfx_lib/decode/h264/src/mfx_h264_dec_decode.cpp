@@ -33,7 +33,6 @@
 #include "umc_h264_va_supplier.h"
 #include "umc_va_video_processing.h"
 
-
 #if defined(MFX_ENABLE_PXP)
 #include "mfx_pxp_video_accelerator.h"
 #include "mfx_pxp_h264_supplier.h"
@@ -1658,6 +1657,7 @@ mfxStatus VideoDECODEH264::DecodeFrame(mfxFrameSurface1 *surface_out, UMC::H264D
     if (error & UMC::ERROR_FRAME_BOTTOM_FIELD_ABSENT)
         surface_out->Data.Corrupted |= MFX_CORRUPTION_ABSENT_BOTTOM_FIELD;
 
+    MFX_CHECK(index >= 0, MFX_ERR_NOT_FOUND);
     mfxStatus sts = m_surface_source->PrepareToOutput(surface_out, index, &m_vPar);
     MFX_CHECK_STS(sts);
 

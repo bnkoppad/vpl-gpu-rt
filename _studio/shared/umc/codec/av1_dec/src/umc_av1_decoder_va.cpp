@@ -82,8 +82,10 @@ namespace UMC_AV1_DECODER
         if (firstSubmission)
         {
             // it's first submission for current frame - need to call BeginFrame
-            sts = va->BeginFrame(frame.GetMemID(SURFACE_RECON));
-            MFX_LTRACE_I(MFX_TRACE_LEVEL_INTERNAL, sts);
+            UMC::FrameMemID reconMid = frame.GetMemID(SURFACE_RECON);
+            MFX_CHECK(reconMid >= 0, UMC::UMC_ERR_FAILED);
+            sts = va->BeginFrame(reconMid);
+	    MFX_LTRACE_I(MFX_TRACE_LEVEL_INTERNAL, sts);
 
             TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_SUBMIT_TASK, EVENT_TYPE_END, TR_KEY_DDI_API, make_event_data(FrameIndex, frame.GetMemID(), sts));
 
@@ -131,8 +133,10 @@ namespace UMC_AV1_DECODER
         assert(va);
         UMC::Status sts = UMC::UMC_OK;
 
-        sts = va->BeginFrame(frame.GetMemID(SURFACE_RECON));
-        if (sts != UMC::UMC_OK)
+        UMC::FrameMemID reconMid = frame.GetMemID(SURFACE_RECON);
+        MFX_CHECK(reconMid >= 0, UMC::UMC_ERR_FAILED);
+        sts = va->BeginFrame(reconMid);
+	if (sts != UMC::UMC_OK)
             return sts;
 
         assert(packer);
