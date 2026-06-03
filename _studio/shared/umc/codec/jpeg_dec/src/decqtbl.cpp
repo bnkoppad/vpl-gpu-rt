@@ -114,7 +114,7 @@ JERRCODE CJPEGDecoderQuantTable::Init(int id,uint16_t raw[64])
   m_id        = id & 0x0f;
   m_precision = 1; // 16-bit precision
 
-  MFX_INTERNAL_CPY((int16_t*)m_raw16u, (int16_t*)raw, DCTSIZE2*sizeof(int16_t));
+  memcpy(m_raw16u, raw, DCTSIZE2 * sizeof(uint16_t));
 #ifdef MFX_ENABLE_JPEG_SW_FALLBACK
   int status = mfxiQuantInvTableInit_JPEG_16u32f(m_raw16u,m_qnt32f);
   if(ippStsNoErr != status)

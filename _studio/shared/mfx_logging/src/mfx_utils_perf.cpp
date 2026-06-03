@@ -3,7 +3,8 @@
 #include <stdarg.h>
 #include <pthread.h>
 #include "unistd.h"
-#include <sys/stat.h> 
+#include <sys/stat.h>
+#include <cerrno> 
 
 #include "mfx_utils_perf.h"
 
@@ -190,13 +191,9 @@ void PerfUtility::savePerfData()
         MFX_SecureStringPrint(sDetailsFileName, MFX_MAX_PATH_LENGTH + 1, MFX_MAX_PATH_LENGTH + 1,
                               perf_log_path_fmt, perfFilePath.c_str(), pid, it.first);
 
-        if (access(perfFilePath.c_str(), 0) == -1)
+        if (mkdir(perfFilePath.c_str(), S_IRWXU) == -1 && errno != EEXIST)
         {
-            int folder_exist_status = mkdir(perfFilePath.c_str(), S_IRWXU);
-            if (folder_exist_status == -1)
-            {
-                return;
-            }
+            return;
         }
         pTimeStampFile.open(sDetailsFileName, std::ios::app);
         if (pTimeStampFile.good() == false)

@@ -2319,6 +2319,14 @@ mfxStatus VAAPIVideoProcessing::Execute_Composition_TiledVideoWall(mfxExecutePar
         MFX_CHECK_STS(sts);
     }
 
+    // Clear pointers to local variables before returning
+    for (auto& p : m_pipelineParam)
+    {
+        p.surface_region = nullptr;
+        p.output_region  = nullptr;
+        p.blend_state    = nullptr;
+    }
+
     // (3) info needed for sync operation
     //-------------------------------------------------------
     {
@@ -2908,6 +2916,14 @@ mfxStatus VAAPIVideoProcessing::Execute_Composition(mfxExecuteParams *pParams)
     {
         sts = CheckAndDestroyVAbuffer(m_vaDisplay, id);
         MFX_CHECK_STS(sts);
+    }
+
+    // Clear pointers to local variables before returning
+    for (auto& p : m_pipelineParam)
+    {
+        p.surface_region = nullptr;
+        p.output_region  = nullptr;
+        p.blend_state    = nullptr;
     }
 
     // (3) info needed for sync operation

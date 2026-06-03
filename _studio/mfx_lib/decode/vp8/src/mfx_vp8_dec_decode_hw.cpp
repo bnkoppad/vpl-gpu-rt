@@ -560,7 +560,8 @@ mfxStatus MFX_CDECL VP8DECODERoutine(void *p_state, void * /*pp_param*/, mfxU32 
 {
     MFX_AUTO_LTRACE(MFX_TRACE_LEVEL_INTERNAL, "VP8DECODERoutine");
     mfxStatus sts = MFX_ERR_NONE;
-    VideoDECODEVP8_HW::VP8DECODERoutineData& data = *(VideoDECODEVP8_HW::VP8DECODERoutineData*)p_state;
+    VideoDECODEVP8_HW::VP8DECODERoutineData* pData = (VideoDECODEVP8_HW::VP8DECODERoutineData*)p_state;
+    VideoDECODEVP8_HW::VP8DECODERoutineData& data = *pData;
     VideoDECODEVP8_HW& decoder = *data.decoder;
 
 
@@ -589,7 +590,7 @@ mfxStatus MFX_CDECL VP8DECODERoutine(void *p_state, void * /*pp_param*/, mfxU32 
         decoder.m_surface_source.get()->DecreaseReference(memIdToUnlock);
     }
 
-    delete &data;
+    delete pData;
 
     return sts;
 }
