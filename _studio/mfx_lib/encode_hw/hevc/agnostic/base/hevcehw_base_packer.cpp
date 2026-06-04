@@ -250,11 +250,11 @@ void BitstreamWriter::PutBitsBuffer(mfxU32 n, void* bb, mfxU32 o)
 
             m_bs++;
             b++;
-            n -= 8;
+            n -= 8u;
         }
 
         if (n > 0)
-            PutBits(n, (b[0] >> (8 - n)));
+            PutBits(n, (b[0] >> (8u - n)));
 
         return true;
     };

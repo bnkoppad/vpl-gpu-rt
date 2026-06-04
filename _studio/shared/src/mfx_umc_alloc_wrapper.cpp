@@ -1801,8 +1801,9 @@ const UMC::FrameData* SurfaceSource::Lock(UMC::FrameMemID MID)
 
             umc_frame_data.Init(&m_video_data_info, MID, this);
 
-            m_umc2framedata.insert({ MID, umc_frame_data });
-            it_framedata = m_umc2framedata.find(MID);
+            it_framedata = m_umc2framedata.emplace(MID, umc_frame_data).first;
+            if (it_framedata == std::end(m_umc2framedata))
+                return nullptr;
         }
 
         UMC::FrameData& umc_frame_data = it_framedata->second;

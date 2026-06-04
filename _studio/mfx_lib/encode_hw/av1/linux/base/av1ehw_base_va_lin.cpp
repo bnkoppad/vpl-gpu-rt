@@ -429,7 +429,7 @@ mfxStatus DDI_VA::QueryCaps()
     m_caps.AV1ToolSupportFlags.fields.enable_cdef       = 1;
 
     VAConfigAttribValEncAV1 attribValEncAV1 = {};
-    attribValEncAV1.value = attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1]].value;
+    attribValEncAV1.value = AV((VAConfigAttribType)VAConfigAttribEncAV1);
     m_caps.CDEFChannelStrengthSupport = attribValEncAV1.bits.support_cdef_channel_strength ? 1 : 0;
     m_caps.AV1ToolSupportFlags.fields.PaletteMode = attribValEncAV1.bits.support_palette_mode ? 1 : 0;
     m_caps.AV1ToolSupportFlags.fields.allow_intrabc = attribValEncAV1.bits.support_allow_intrabc ? 1 : 0;

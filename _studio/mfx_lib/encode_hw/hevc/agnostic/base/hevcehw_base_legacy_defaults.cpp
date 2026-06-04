@@ -1023,7 +1023,7 @@ public:
             }
         }
 
-        return (mfxU8)n;
+        return static_cast<mfxU8>(std::min(n, mfxU32(255)));
     }
 
     static bool NonStdReordering(

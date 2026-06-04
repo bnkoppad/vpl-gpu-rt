@@ -265,11 +265,14 @@ void Interlace::Query1NoCaps(const FeatureBlocks& , TPushQ1 Push)
 
             MFX_CHECK(IsField(mfx.FrameInfo.PicStruct) && sts >= MFX_ERR_NONE, sts);
 
-            sps.log2_max_pic_order_cnt_lsb_minus4 =
-                mfx::clamp<mfxU32>(
-                    mfx::CeilLog2((mfxU32)mfx.GopRefDist * 2u + sps.sub_layer[sps.max_sub_layers_minus1].max_dec_pic_buffering_minus1) - 1
-                    , sps.log2_max_pic_order_cnt_lsb_minus4
-                    , 12u);
+            {
+                auto pocLog2 = mfx::CeilLog2((mfxU32)mfx.GopRefDist * 2u + sps.sub_layer[sps.max_sub_layers_minus1].max_dec_pic_buffering_minus1);
+                sps.log2_max_pic_order_cnt_lsb_minus4 =
+                    mfx::clamp<mfxU32>(
+                        pocLog2 > 0u ? pocLog2 - 1u : 0u
+                        , sps.log2_max_pic_order_cnt_lsb_minus4
+                        , 12u);
+            }
             sps.vui.frame_field_info_present_flag = 1;
             sps.vui.field_seq_flag                = 1;
 

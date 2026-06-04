@@ -3300,7 +3300,7 @@ void Legacy::SetSTRPS(
         {
             return std::move(x) + (mfxU32)r.inter_ref_pic_set_prediction_flag * (mfxU32)r.WeightInGop;
         };
-        if (mfx::CeilLog2(nSet) - mfx::CeilLog2(nSet - 1)) //diff RPS idx bits with bigger RPS for ALL frames
+        if (nSet > 0 && mfx::CeilLog2(nSet) - mfx::CeilLog2(nSet - 1)) //diff RPS idx bits with bigger RPS for ALL frames
             bits0 = par.mfx.NumSlice * std::accumulate(pSetsBegin, pSetsBegin + nSet - 1, bits0, AccFrWithRPS);
 
         //emulate removal of current RPS from SPS

@@ -1714,7 +1714,8 @@ UMC::Status TaskSupplier_H265::ProcessNalUnit(UMC::MediaDataEx *nalUnit)
     case NAL_UT_VPS:
     case NAL_UT_SPS:
     case NAL_UT_PPS:
-        umcRes = DecodeHeaders(nalUnit);
+        if (nalUnit)
+            umcRes = DecodeHeaders(nalUnit);
         {
             UMC::MediaData::AuxInfo* aux = (nalUnit) ? nalUnit->GetAuxInfo(MFX_EXTBUFF_DECODE_ERROR_REPORT) : NULL;
             mfxExtDecodeErrorReport* pDecodeErrorReport = (aux) ? reinterpret_cast<mfxExtDecodeErrorReport*>(aux->ptr) : NULL;

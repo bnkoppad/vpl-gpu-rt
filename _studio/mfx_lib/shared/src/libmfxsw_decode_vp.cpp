@@ -334,10 +334,6 @@ mfxStatus MFXVideoDECODE_VPP_Init(mfxSession session, mfxVideoParam* decode_par,
             mfxRes = session->m_pDVP->VPPs[id]->Init(&VppParams);
             MFX_CHECK_STS(mfxRes);
 
-            // Will not keep (deep copy) Ext Buffers, so clean up here
-            VppParams.NumExtParam = 0;
-            VppParams.ExtParam    = nullptr;
-
             CommonCORE_VPL* base_core_vpl = dynamic_cast<CommonCORE_VPL*>(session->m_pCORE.get());
             MFX_CHECK_HDL(base_core_vpl);
 
@@ -350,6 +346,10 @@ mfxStatus MFXVideoDECODE_VPP_Init(mfxSession session, mfxVideoParam* decode_par,
             auto* pPool = session->m_pDVP->GetSurfacePool(id);
             MFX_CHECK_HDL(pPool);
             MFX_SAFE_CALL(pPool->SetupCache(session, VppParams));
+
+            // Will not keep (deep copy) Ext Buffers, so clean up here
+            VppParams.NumExtParam = 0;
+            VppParams.ExtParam    = nullptr;
         }
     }
     catch (...)

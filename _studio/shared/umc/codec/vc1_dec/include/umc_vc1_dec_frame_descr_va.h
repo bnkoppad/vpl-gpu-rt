@@ -321,7 +321,8 @@ namespace UMC
                         m_pMemoryAllocator->Free(m_iPicHeaderID);
                         m_iPicHeaderID = (MemID)-1;
                     }
-                    m_pContext->m_InitPicLayer = NULL;
+                    if (m_pContext)
+                        m_pContext->m_InitPicLayer = NULL;
 
                     if (m_iBitplaneID != (MemID)-1)
                     {

@@ -35,6 +35,8 @@ namespace mfx
 
         std::string message(int code) const noexcept override
         {
+            try
+            {
             struct message
             {
                 mfxStatus   code;
@@ -83,7 +85,8 @@ namespace mfx
                 [code](message const& m) { return m.code == code; }
             );
 
-            try { return m != std::end(messages) ? (*m).description : ""; }
+            return m != std::end(messages) ? (*m).description : "";
+            }
             catch (...) { return ""; }
         }
 
