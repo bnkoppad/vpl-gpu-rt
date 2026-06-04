@@ -357,7 +357,7 @@ LinuxVideoAccelerator::LinuxVideoAccelerator(void)
 
 LinuxVideoAccelerator::~LinuxVideoAccelerator(void)
 {
-    Close();
+    try { Close(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 }
 
 Status LinuxVideoAccelerator::Init(VideoAcceleratorParams* pInfo)

@@ -127,7 +127,7 @@ VideoVPPBase::VideoVPPBase(VideoCORE *core, mfxStatus* sts )
 
 VideoVPPBase::~VideoVPPBase()
 {
-    Close();
+    try { Close(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 } // VideoVPPBase::~VideoVPPBase()
 
 mfxStatus VideoVPPBase::Close(void)

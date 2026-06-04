@@ -204,7 +204,7 @@ void SetKernelArg(CmKernel * kernel, T0 const & arg)
 template <class T0>
 void SetKernelArgLast(CmKernel * kernel, T0 const & arg, unsigned int index)
 {
-    kernel->SetKernelArg(index, sizeof(T0), &arg);
+    (void)kernel->SetKernelArg(index, sizeof(T0), &arg);
 }
 
 template <class T0, class T1>

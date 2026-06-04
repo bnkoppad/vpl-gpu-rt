@@ -77,8 +77,11 @@ public:
 
     ~SurfaceScopedLock()
     {
-        if (m_mapped)        std::ignore = MFX_STS_TRACE(Unmap());
-        if (m_image_created) std::ignore = MFX_STS_TRACE(DestroyImage());
+        try
+        {
+            if (m_mapped)        std::ignore = MFX_STS_TRACE(Unmap());
+            if (m_image_created) std::ignore = MFX_STS_TRACE(DestroyImage());
+        } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in SurfaceScopedLock destructor"); }
     }
 
     mfxStatus DeriveImage()

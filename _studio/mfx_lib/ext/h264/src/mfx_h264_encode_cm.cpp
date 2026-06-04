@@ -218,7 +218,7 @@ CmSurface::CmSurface(CmDevice * device, mfxU32 width, mfxU32 height, mfxU32 four
 
 CmSurface::~CmSurface()
 {
-    Reset(0, 0);
+    try { Reset(0, 0); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 }
 
 CmSurface2D * CmSurface::operator -> ()
@@ -338,7 +338,7 @@ CmBuf::CmBuf(CmDevice * device, mfxU32 size)
 
 CmBuf::~CmBuf()
 {
-    Reset(0, 0);
+    try { Reset(0, 0); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 }
 
 CmBuffer * CmBuf::operator -> ()

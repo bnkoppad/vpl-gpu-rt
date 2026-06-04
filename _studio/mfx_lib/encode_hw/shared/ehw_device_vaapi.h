@@ -38,7 +38,7 @@ class DeviceVAAPI
 public:
     ~DeviceVAAPI()
     {
-        Destroy();
+        try { Destroy(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
     }
 
     union TVAGUID

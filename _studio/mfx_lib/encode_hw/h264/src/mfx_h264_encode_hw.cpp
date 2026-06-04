@@ -734,6 +734,8 @@ ImplementationAvc::ImplementationAvc(VideoCORE * core)
 
 ImplementationAvc::~ImplementationAvc()
 {
+    try
+    {
     amtScd.Close();
 #ifdef MFX_ENABLE_EXT
     DestroyDanglingCmResources();
@@ -746,6 +748,7 @@ ImplementationAvc::~ImplementationAvc()
         for (mfxU32 i = 0; i < finDpb.Size(); i++)
             m_core->DecreaseReference(*finDpb[i].m_yuvRaw);
     }
+    } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 }
 #ifdef MFX_ENABLE_EXT
 void ImplementationAvc::DestroyDanglingCmResources()

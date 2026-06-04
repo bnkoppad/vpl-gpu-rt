@@ -122,22 +122,21 @@ AutoPerfUtility::~AutoPerfUtility()
         return;
     }
 
-    std::string flag = MFX_FLAG_EXIT;
-    std::vector<uint32_t> ids;
-    uint64_t tid = pthread_self();
-
-    if (bPrintTaskIds && tid2taskIds.find(tid) != tid2taskIds.end())
-    {
-        tid2taskIds[tid].swap(ids);
-    }
-
     try
     {
+        std::string flag = MFX_FLAG_EXIT;
+        std::vector<uint32_t> ids;
+        uint64_t tid = pthread_self();
+
+        if (bPrintTaskIds && tid2taskIds.find(tid) != tid2taskIds.end())
+        {
+            tid2taskIds[tid].swap(ids);
+        }
+
         g_perfutility->timeStampTick(autotag, autolevel, flag, ids);
     }
-    catch (std::bad_array_new_length&)
+    catch (...)
     {
-
     }
 }
 

@@ -545,7 +545,7 @@ mfxStatus VAAPIEncoder::Init(ENCODE_FUNC func, ExecuteBuffers* pExecuteBuffers)
     attrib[1].type = VAConfigAttribRateControl;
     //attrib[2].type = VAConfigAttribEncSkipFrame;
 
-    vaGetConfigAttributes(m_vaDisplay,
+    (void)vaGetConfigAttributes(m_vaDisplay,
         ConvertProfileTypeMFX2VAAPI(pExecuteBuffers->m_sps.Profile),
         VAEntrypointEncSlice,
         &attrib[0], 2);

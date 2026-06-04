@@ -405,7 +405,9 @@ public:
     ~OnExit()
     {
         if (operator bool())
-            operator()();
+        {
+            try { operator()(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in OnExit destructor"); }
+        }
     }
 
     template<class... TArg>

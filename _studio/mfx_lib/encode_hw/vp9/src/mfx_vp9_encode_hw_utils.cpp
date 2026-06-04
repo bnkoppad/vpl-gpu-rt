@@ -609,7 +609,7 @@ MfxFrameAllocResponse::MfxFrameAllocResponse()
 
 MfxFrameAllocResponse::~MfxFrameAllocResponse()
 {
-    Release();
+    try { Release(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 }
 
 mfxStatus MfxFrameAllocResponse::Alloc(

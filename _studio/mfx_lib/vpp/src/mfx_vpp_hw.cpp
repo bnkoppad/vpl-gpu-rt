@@ -1186,7 +1186,7 @@ TaskManager::TaskManager()
 
 TaskManager::~TaskManager()
 {
-    Close();
+    try { Close(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 
 } // TaskManager::~TaskManager(void)
 
@@ -1940,7 +1940,7 @@ VideoVPPHW::VideoVPPHW(IOMode mode, VideoCORE *core)
 
 VideoVPPHW::~VideoVPPHW()
 {
-    Close();
+    try { Close(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
 
 } // VideoVPPHW::~VideoVPPHW()
 

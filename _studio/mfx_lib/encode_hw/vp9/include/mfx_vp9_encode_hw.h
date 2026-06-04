@@ -67,7 +67,7 @@ public:
     }
     virtual ~MFXVideoENCODEVP9_HW() override
     {
-        Close();
+        try { Close(); } catch (...) { MFX_LTRACE_MSG(MFX_TRACE_LEVEL_WARNING_INFO, "Error: exception caught and suppressed in destructor"); }
     }
 
     static mfxStatus QueryIOSurf(VideoCORE *core, mfxVideoParam *par, mfxFrameAllocRequest *request);

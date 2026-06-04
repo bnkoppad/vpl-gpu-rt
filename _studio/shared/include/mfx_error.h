@@ -83,8 +83,8 @@ namespace mfx
                 [code](message const& m) { return m.code == code; }
             );
 
-            return
-                m != std::end(messages) ? (*m).description : "";
+            try { return m != std::end(messages) ? (*m).description : ""; }
+            catch (...) { return ""; }
         }
 
         std::error_condition default_error_condition(int value) const noexcept override

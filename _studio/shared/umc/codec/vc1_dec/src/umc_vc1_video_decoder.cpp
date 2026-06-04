@@ -264,7 +264,7 @@ Status VC1VideoDecoder::Init(BaseCodecParams *pInit)
     //internal decoding flags
     m_lFrameCount = 0;
     //internal exception initialization
-    vc1_except_profiler::GetEnvDescript(smart_recon, mbGroupLevel);
+    (void)vc1_except_profiler::GetEnvDescript(smart_recon, mbGroupLevel);
 
     return umcRes;
 }
