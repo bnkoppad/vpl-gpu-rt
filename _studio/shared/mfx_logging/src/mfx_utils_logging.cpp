@@ -24,9 +24,11 @@ auto fileDeleter = [](FILE* file)->void { if (file) fclose(file); };
 
 bool gMfxLogSkipped                        = false;
 mfxLogLevel gMfxLogLevel                   = LEVEL_WARN;
-std::shared_ptr<std::FILE> gMfxLogFile     = {};
+static std::shared_ptr<std::FILE>& GetMfxLogFileInstance()     { static std::shared_ptr<std::FILE> s{}; return s; }
+static std::shared_ptr<std::FILE>& GetMfxAPIDumpFileInstance() { static std::shared_ptr<std::FILE> s{}; return s; }
+std::shared_ptr<std::FILE>& gMfxLogFile     = GetMfxLogFileInstance();
 std::mutex gMfxLogMutex                    = {};
-std::shared_ptr<std::FILE> gMfxAPIDumpFile = {};
+std::shared_ptr<std::FILE>& gMfxAPIDumpFile = GetMfxAPIDumpFileInstance();
 
 #define DEFINE_ERR_CODE(code)\
     {code, #code}

@@ -295,7 +295,10 @@ vm_status vm_semaphore_post_many(vm_semaphore *sem, int32_t post_count)
             {
                 if (0 > sem->count)
                 {
-                    pthread_mutex_unlock(&sem->mutex);
+                    if (pthread_mutex_unlock(&sem->mutex))
+                    {
+                        umc_status = VM_OPERATION_FAILED;
+                    }
                     return umc_status; /* VM_NOT_INITIALIZED */
                 }
                 sem->count++;

@@ -330,7 +330,8 @@ namespace UMC
                         m_pMemoryAllocator->Free(m_iBitplaneID);
                         m_iBitplaneID = (MemID)-1;
                     }
-                    m_pContext->m_pBitplane.m_databits = NULL;
+                    if (m_pContext)
+                        m_pContext->m_pBitplane.m_databits = NULL;
 
                     if (m_ipBufferStartID != (MemID)-1)
                     {
@@ -338,7 +339,8 @@ namespace UMC
                         m_pMemoryAllocator->Free(m_ipBufferStartID);
                         m_ipBufferStartID = (MemID)-1;
                     }
-                    m_pContext->m_pBufferStart = NULL;
+                    if (m_pContext)
+                        m_pContext->m_pBufferStart = NULL;
 
                     if (m_ipContextID != (MemID)-1)
                     {

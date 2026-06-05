@@ -45,8 +45,8 @@ typedef enum
 
 extern bool gMfxLogSkipped;
 extern mfxLogLevel gMfxLogLevel;
-extern std::shared_ptr<std::FILE> gMfxLogFile;
-extern std::shared_ptr<std::FILE> gMfxAPIDumpFile;
+extern std::shared_ptr<std::FILE>& gMfxLogFile;
+extern std::shared_ptr<std::FILE>& gMfxAPIDumpFile;
 extern std::mutex gMfxLogMutex;
 
 #define COLOR_BLACK  0x0000

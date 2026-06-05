@@ -435,13 +435,13 @@ mfxStatus DDI_VA::QueryCaps()
     m_caps.AV1ToolSupportFlags.fields.allow_intrabc = attribValEncAV1.bits.support_allow_intrabc ? 1 : 0;
     
     VAConfigAttribValEncAV1Ext1 attribValEncAV1Ext1 = {};
-    attribValEncAV1Ext1.value = attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1Ext1]].value;
+    attribValEncAV1Ext1.value = AV((VAConfigAttribType)VAConfigAttribEncAV1Ext1);
     m_caps.SegmentFeatureSupport               = attribValEncAV1Ext1.bits.segment_feature_support;
     m_caps.MinSegIdBlockSizeAccepted           = attribValEncAV1Ext1.bits.min_segid_block_size_accepted;
     m_caps.SupportedInterpolationFilters.value = static_cast<mfxU8>(attribValEncAV1Ext1.bits.interpolation_filter);
 
     VAConfigAttribValEncAV1Ext2 attribValEncAV1Ext2 = {};
-    attribValEncAV1Ext2.value = attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1Ext2]].value;
+    attribValEncAV1Ext2.value = AV((VAConfigAttribType)VAConfigAttribEncAV1Ext2);
     m_caps.TileSizeBytesMinus1 = attribValEncAV1Ext2.bits.tile_size_bytes_minus1;
 
     return MFX_ERR_NONE;

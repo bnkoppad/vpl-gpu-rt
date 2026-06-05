@@ -3304,7 +3304,7 @@ void Legacy::SetSTRPS(
             bits0 = par.mfx.NumSlice * std::accumulate(pSetsBegin, pSetsBegin + nSet - 1, bits0, AccFrWithRPS);
 
         //emulate removal of current RPS from SPS
-        --nSet;
+        if (nSet > 0) --nSet;
         rps.inter_ref_pic_set_prediction_flag = 0;
         OptimizeSTRPS(pSetsBegin, nSet, rps, nSet);
 
