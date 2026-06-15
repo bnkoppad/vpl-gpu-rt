@@ -549,12 +549,20 @@ SEI_Storer_H265::SEI_Message* SEI_Storer_H265::AddMessage(UMC::MediaDataEx *nalU
 }
 
 ViewItem_H265::ViewItem_H265()
+    : pDPB(nullptr)
+    , dpbSize(0)
+    , sps_max_dec_pic_buffering(0)
+    , sps_max_num_reorder_pics(0)
 {
     Reset();
 
 } // ViewItem_H265::ViewItem_H265(void)
 
 ViewItem_H265::ViewItem_H265(const ViewItem_H265 &src)
+    : pDPB(nullptr)
+    , dpbSize(0)
+    , sps_max_dec_pic_buffering(0)
+    , sps_max_num_reorder_pics(0)
 {
     Reset();
 

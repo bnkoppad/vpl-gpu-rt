@@ -428,6 +428,8 @@ mfxStatus DDI_VA::QueryCaps()
     m_caps.AV1ToolSupportFlags.fields.enable_order_hint = 1;
     m_caps.AV1ToolSupportFlags.fields.enable_cdef       = 1;
 
+    if (idx_map.find((VAConfigAttribType)VAConfigAttribEncAV1) == idx_map.end())
+        return MFX_ERR_UNSUPPORTED;
     auto attribValEncAV1 = *(VAConfigAttribValEncAV1 *)(&attrs[idx_map[(VAConfigAttribType)VAConfigAttribEncAV1]].value);
     m_caps.CDEFChannelStrengthSupport = attribValEncAV1.bits.support_cdef_channel_strength ? 1 : 0;
     m_caps.AV1ToolSupportFlags.fields.PaletteMode = attribValEncAV1.bits.support_palette_mode ? 1 : 0;

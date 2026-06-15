@@ -344,6 +344,7 @@ mfxStatus MFXVideoDECODE_VPP_Init(mfxSession session, mfxVideoParam* decode_par,
             mfxU16 vpp_memtype = mfxU16(MFX_MEMTYPE_FROM_VPPOUT | ((VppParams.IOPattern & MFX_IOPATTERN_OUT_VIDEO_MEMORY) ? MFX_MEMTYPE_VIDEO_MEMORY_PROCESSOR_TARGET : MFX_MEMTYPE_SYSTEM_MEMORY));
 
             std::unique_ptr<SurfaceCache> scoped_cache_ptr(SurfaceCache::Create(*base_core_vpl, vpp_memtype, session->m_pDVP->VppParams[id].vpp.Out));
+            MFX_CHECK(scoped_cache_ptr, MFX_ERR_MEMORY_ALLOC);
             session->m_pDVP->AssignPool(id, scoped_cache_ptr.get());
             scoped_cache_ptr.release();
 

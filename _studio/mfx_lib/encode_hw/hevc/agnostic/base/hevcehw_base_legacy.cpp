@@ -1792,10 +1792,14 @@ void Legacy::SubmitTask(const FeatureBlocks& /*blocks*/, TPushST Push)
             mfxFrameSurface1_scoped_lock outLock(&surfInp, ccore);
             MFX_SAFE_CALL(outLock.lock(MFX_MAP_WRITE));
 
+            MFX_CHECK(surfDst.Data.Y && surfInp.Data.Y16, MFX_ERR_NULL_PTR);
+
             for (size_t y = 0; y < size_t(par.mfx.FrameInfo.Height); ++y)
             {
                 copySysVariantToVideo(&surfDst.Data.Y[surfDst.Data.Pitch * y], mfx::align2_value(par.mfx.FrameInfo.Width, 32), &surfInp.Data.Y16[(surfInp.Data.Pitch>>1) * y], par.mfx.FrameInfo.Width);
             }
+
+            MFX_CHECK(surfDst.Data.UV && surfInp.Data.UV, MFX_ERR_NULL_PTR);
 
             mfxU16* DUV = (mfxU16*) surfInp.Data.UV;
             for (int y = 0; y < par.mfx.FrameInfo.Height / 2; ++y)
