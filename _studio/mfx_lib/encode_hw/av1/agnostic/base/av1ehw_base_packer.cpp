@@ -102,7 +102,7 @@ void BitstreamWriter::PutBitsBuffer(mfxU32 n, void* bb, mfxU32 o)
     auto PutLastByteBitsAligned = [&]()
     {
         m_bs[0] = b[N];
-        m_bs[0] &= (0xff << (8 - n));
+        m_bs[0] &= (mfxU8)(0xffu << (8u - n));
         m_bitOffset = (mfxU8)n;
         return true;
     };
@@ -126,7 +126,7 @@ void BitstreamWriter::PutBitsBuffer(mfxU32 n, void* bb, mfxU32 o)
 
         while (n >= 8)
         {
-            B = ((mfxU32)b[0] << 8) >> m_bitOffset;
+            B = ((mfxU32)b[0] << 8u) >> m_bitOffset;
 
             m_bs[0] |= (mfxU8)(B >> 8);
             m_bs[1] = (mfxU8)B;

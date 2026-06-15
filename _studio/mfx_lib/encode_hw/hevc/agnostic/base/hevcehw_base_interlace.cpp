@@ -265,9 +265,10 @@ void Interlace::Query1NoCaps(const FeatureBlocks& , TPushQ1 Push)
 
             MFX_CHECK(IsField(mfx.FrameInfo.PicStruct) && sts >= MFX_ERR_NONE, sts);
 
+            const mfxU32 ceilLog2Val = mfx::CeilLog2(mfx.GopRefDist * 2 + sps.sub_layer[sps.max_sub_layers_minus1].max_dec_pic_buffering_minus1);
             sps.log2_max_pic_order_cnt_lsb_minus4 =
                 mfx::clamp<mfxU32>(
-                    mfx::CeilLog2(mfx.GopRefDist * 2 + sps.sub_layer[sps.max_sub_layers_minus1].max_dec_pic_buffering_minus1) - 1
+                    ceilLog2Val > 0u ? ceilLog2Val - 1u : 0u
                     , sps.log2_max_pic_order_cnt_lsb_minus4
                     , 12u);
             sps.vui.frame_field_info_present_flag = 1;

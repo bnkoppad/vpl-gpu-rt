@@ -1409,7 +1409,7 @@ mfxStatus VAAPIEncoder::SetFrames (ExecuteBuffers* pExecuteBuffers)
         ind = 0xff;
     }
 
-    pExecuteBuffers->m_pps.CurrReconstructedPic.Index7Bits     =  mfxU8(ind < 0 ? 0 : ind);
+    pExecuteBuffers->m_pps.CurrReconstructedPic.Index7Bits     =  (ind < 0) ? mfxU8(0) : mfxU8(ind & 0x7F);
     pExecuteBuffers->m_pps.CurrReconstructedPic.AssociatedFlag =  0;
     pExecuteBuffers->m_idxMb = (DWORD)ind;
     pExecuteBuffers->m_idxBs = (DWORD)ind;
@@ -1421,7 +1421,7 @@ mfxStatus VAAPIEncoder::SetFrames (ExecuteBuffers* pExecuteBuffers)
     }
     //else CurrOriginalPic == CurrReconstructedPic
 
-    pExecuteBuffers->m_pps.CurrOriginalPic.Index7Bits     =  mfxU8(ind);
+    pExecuteBuffers->m_pps.CurrOriginalPic.Index7Bits     =  mfxU8(ind & 0x7F);
     pExecuteBuffers->m_pps.CurrOriginalPic.AssociatedFlag =  0;
 
     if (pExecuteBuffers->m_RefFrameMemID[0])

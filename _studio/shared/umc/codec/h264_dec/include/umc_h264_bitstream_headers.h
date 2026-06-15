@@ -381,7 +381,7 @@ inline bool DecodeExpGolombOne_H264_1u32s (uint32_t **ppBitStream,
             else
             {
                 h264GetBits((*ppBitStream), (*pBitOffset), leadingZeroBits, code);
-                sval = (1 << leadingZeroBits) - 1 + code;
+                sval = (1u << leadingZeroBits) - 1u + code;
             }
         }
         else
