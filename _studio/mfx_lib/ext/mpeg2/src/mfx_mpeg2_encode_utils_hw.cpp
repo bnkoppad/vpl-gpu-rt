@@ -1170,6 +1170,8 @@ namespace MPEG2EncoderHW
             MFX_CHECK(pSPSPPS->PPSBufSize == 0, MFX_ERR_INVALID_VIDEO_PARAM);
             MFX_CHECK(!pSPSPPS->PPSBuffer, MFX_ERR_INVALID_VIDEO_PARAM);
 
+            MFX_CHECK(pSPSPPS->SPSBuffer, MFX_ERR_INVALID_VIDEO_PARAM);
+
             mfxU32 real_len = 0;
             if (ext != 0)
             {

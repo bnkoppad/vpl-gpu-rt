@@ -1668,6 +1668,8 @@ mfxStatus VideoDECODEVP9_HW::PackHeaders(mfxBitstream *bs, VP9DecoderFrame const
         MFX_CHECK(m_Packer, MFX_ERR_UNDEFINED_BEHAVIOR);
     }
 
+    MFX_CHECK(m_Packer, MFX_ERR_UNDEFINED_BEHAVIOR);
+
     VP9Bitstream vp9bs(bs->Data + bs->DataOffset, bs->DataLength);
 
     try

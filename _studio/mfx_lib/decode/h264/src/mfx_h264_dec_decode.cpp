@@ -1629,6 +1629,8 @@ mfxStatus VideoDECODEH264::DecodeFrame(mfxFrameSurface1 *surface_out, UMC::H264D
         MFX_CHECK(pFrame, MFX_ERR_NOT_FOUND);
     }
 
+    MFX_CHECK(index >= 0, MFX_ERR_NOT_FOUND);
+
     int32_t const error = pFrame->GetError();
     if (error & UMC::ERROR_FRAME_DEVICE_FAILURE)
     {

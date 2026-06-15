@@ -624,6 +624,7 @@ mfxStatus MFXVideoFrameInterpolation::DoInterpolation(mfxU16 leftIdx, mfxU16 rig
 
 mfxStatus MFXVideoFrameInterpolation::DoInterpolation()
 {
+    MFX_CHECK(m_ratio > 0, MFX_ERR_INVALID_VIDEO_PARAM);
     MFX_RETURN(DoInterpolation(0, (mfxU16)m_ratio));
 }
 

@@ -1708,8 +1708,9 @@ UMC::Status TaskSupplier_H265::ProcessNalUnit(UMC::MediaDataEx *nalUnit)
     case NAL_UT_SPS:
     case NAL_UT_PPS:
         umcRes = DecodeHeaders(nalUnit);
+        if (nalUnit)
         {
-            UMC::MediaData::AuxInfo* aux = (nalUnit) ? nalUnit->GetAuxInfo(MFX_EXTBUFF_DECODE_ERROR_REPORT) : NULL;
+            UMC::MediaData::AuxInfo* aux = nalUnit->GetAuxInfo(MFX_EXTBUFF_DECODE_ERROR_REPORT);
             mfxExtDecodeErrorReport* pDecodeErrorReport = (aux) ? reinterpret_cast<mfxExtDecodeErrorReport*>(aux->ptr) : NULL;
             if (pDecodeErrorReport && umcRes == UMC::UMC_ERR_INVALID_STREAM)
                 SetDecodeErrorTypes(unitType, pDecodeErrorReport);
@@ -1883,10 +1884,16 @@ UMC::Status TaskSupplier_H265::AddOneFrame(UMC::MediaData * pSource)
 
                             if (AddSlice(0, !pSource) == UMC::UMC_OK)
                             {
-                                pSource->MoveDataPointer(- size - 3);
+                                if (pSource)
+                                {
+                                    pSource->MoveDataPointer(- size - 3);
+                                }
                                 return UMC::UMC_OK;
                             }
-                            moveToSpsOffset = pSource->GetDataSize() + size + 3;
+                            if (pSource)
+                            {
+                                moveToSpsOffset = pSource->GetDataSize() + size + 3;
+                            }
                             continue;
                         }
                         if (pDecodeErrorReport && umsRes == UMC::UMC_ERR_INVALID_STREAM)

@@ -1322,6 +1322,12 @@ SurfaceSource::SurfaceSource(VideoCORE* core, const mfxVideoParam& video_param, 
 
         MFX_CHECK_WITH_THROW_STS(m_umc_allocator_adapter.get(), MFX_ERR_INVALID_HANDLE);
 
+        // Additional check for Coverity - the above check throws, but static analysis doesn't track that
+        if (!m_umc_allocator_adapter)
+        {
+            throw std::system_error(mfx::make_error_code(MFX_ERR_INVALID_HANDLE));
+        }
+
         bool useInternal = request.Type & MFX_MEMTYPE_INTERNAL_FRAME;
         mfxStatus mfxSts = MFX_ERR_NONE;
 
@@ -1534,6 +1540,12 @@ mfxFrameSurface1* SurfaceSource::GetDecoderSurface(UMC::FrameMemID index)
     if (it == std::end(m_umc2mfx_memid))
     {
         std::ignore = MFX_STS_TRACE(MFX_ERR_INVALID_HANDLE);
+        return nullptr;
+    }
+
+    if (!m_vpl_cache_decoder_surfaces)
+    {
+        std::ignore = MFX_STS_TRACE(MFX_ERR_NOT_INITIALIZED);
         return nullptr;
     }
 
@@ -1797,7 +1809,12 @@ const UMC::FrameData* SurfaceSource::Lock(UMC::FrameMemID MID)
 
             umc_frame_data.Init(&m_video_data_info, MID, this);
 
-            std::tie(it_framedata, std::ignore) = m_umc2framedata.insert({ MID, umc_frame_data });
+            bool inserted = false;
+            std::tie(it_framedata, inserted) = m_umc2framedata.insert({ MID, umc_frame_data });
+            if (!inserted || it_framedata == std::end(m_umc2framedata))
+            {
+                return nullptr;
+            }
         }
 
         UMC::FrameData& umc_frame_data = it_framedata->second;

@@ -1014,8 +1014,9 @@ public:
         bool  bBPyramid  = (par.base.GetBRefType(par) == MFX_B_REF_PYRAMID);
         mfxU8 n          = !!BFrameRate;
 
-        if (bBPyramid && n--)
+        if (bBPyramid && n)
         {
+            n--;
             while (BFrameRate)
             {
                 BFrameRate >>= 1;

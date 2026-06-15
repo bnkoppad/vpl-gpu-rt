@@ -545,10 +545,12 @@ mfxStatus VAAPIEncoder::Init(ENCODE_FUNC func, ExecuteBuffers* pExecuteBuffers)
     attrib[1].type = VAConfigAttribRateControl;
     //attrib[2].type = VAConfigAttribEncSkipFrame;
 
-    vaGetConfigAttributes(m_vaDisplay,
+    vaSts = vaGetConfigAttributes(m_vaDisplay,
         ConvertProfileTypeMFX2VAAPI(pExecuteBuffers->m_sps.Profile),
         VAEntrypointEncSlice,
         &attrib[0], 2);
+
+    MFX_CHECK(vaSts == VA_STATUS_SUCCESS, MFX_ERR_DEVICE_FAILED);
 
     if ((attrib[0].value & VA_RT_FORMAT_YUV420) == 0)
         return MFX_ERR_DEVICE_FAILED;

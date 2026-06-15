@@ -148,6 +148,9 @@ public:
 
         TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_ENDFRAME_TASK, EVENT_TYPE_START, TR_KEY_DDI_API, make_event_data(FrameIndex, m_va));
 
+        if (!m_va)
+            throw h264_exception(UMC_ERR_NOT_INITIALIZED);
+
         sts = m_va->EndFrame();
         MFX_LTRACE_I(MFX_TRACE_LEVEL_INTERNAL, sts);
         TRACE_EVENT(MFX_TRACE_HOTSPOT_DDI_ENDFRAME_TASK, EVENT_TYPE_END, TR_KEY_DDI_API, make_event_data(FrameIndex, sts));

@@ -224,6 +224,9 @@ namespace UMC
                     }
                 }
 
+                if(m_pContext == NULL)
+                    return false;
+
                 memset(m_pContext, 0, sizeof(VC1Context));
 
 
